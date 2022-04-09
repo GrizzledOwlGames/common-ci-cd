@@ -1,7 +1,11 @@
 name: Acquire Activation File for Unity Personal License
+
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+
 jobs:
+  
+  #This creates an activiation file.
   activation:
     name: Request manual activation file 🔑
     runs-on: ubuntu-latest
