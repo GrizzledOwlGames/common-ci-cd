@@ -10,13 +10,10 @@ env:
 
 jobs:
   activateAndThenReturnLicense:
-    name: returnLicense 🎈
+    name: Activate and Return License
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: game-ci/unity-activate@v2
-        with:
-          unityVersion: '2021.2.19f1'
-          
+      - uses: game-ci/unity-activate@v2          
       # Uncomment below for pro licenses
       #- uses: game-ci/unity-return-license@v2
