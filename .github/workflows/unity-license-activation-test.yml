@@ -1,0 +1,13 @@
+name: Unity License Activation Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  activateAndThenReturnLicense:
+    name: returnLicense 🎈
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: game-ci/unity-activate@v2
+      - uses: game-ci/unity-return-license@v2
