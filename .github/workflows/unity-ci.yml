@@ -64,3 +64,52 @@ jobs:
           name: Build-${{ matrix.targetPlatform }}
           path: build/${{ matrix.targetPlatform }}
 
+  # Runs Edit and Play Mode Tests
+  testAllModes:
+    name: Test in ${{ matrix.testMode }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        #projectPath:
+        #  - test-project
+        testMode:
+          - playmode
+          - editmode
+    steps:
+      # Checks out the code of the repo
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: true
+      
+      # Caches the Unity Library
+      - name: Cache Library
+        uses: actions/cache@v2
+        with:
+          path: Library # if using project path, prefix with ${{ matrix.projectPath }}/
+          key: Library- # ${{ matrix.projectPath }}
+          restore-keys: Library-
+      
+      # Runs the tests for the specific play mode
+      - name: Test ${{ matrix.testMode }}
+        uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          #projectPath: ${{ matrix.projectPath }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: ${{ matrix.testMode }} Test Results
+      
+      # Uploads the test results as an artifact
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.artifactsPath }}
+
