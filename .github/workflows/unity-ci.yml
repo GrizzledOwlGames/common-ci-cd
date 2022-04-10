@@ -74,7 +74,7 @@ jobs:
         #projectPath:
         #  - test-project
         testMode:
-          - StandaloneWindows64
+          - playmode
           - editmode
     steps:
       # Checks out the code of the repo
