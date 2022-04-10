@@ -10,4 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: game-ci/unity-activate@v2
-      - uses: game-ci/unity-return-license@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          unityVersion: '2021.2.19f1'
+          
+      # Uncomment below for pro licenses
+      #- uses: game-ci/unity-return-license@v2
