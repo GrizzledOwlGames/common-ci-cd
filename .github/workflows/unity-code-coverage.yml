@@ -1,0 +1,61 @@
+# This is a basic build and test script for working with Unity Projects
+name: Unity Project CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow whenever a commit is directly pushed to the master branch
+  push:
+    branches: [ master ]
+  # Triggers the workflow on pull request events but only for the master branch
+  pull_request:
+    branches: [ master ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+# Common environment variables used for the steps in the jobs.
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+  UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
+jobs:
+
+  # Runs Edit and Play Mode Tests
+  testAllModes:
+    name: Test in ${{ matrix.testMode }}
+    runs-on: ubuntu-latest
+    steps:
+      # Checks out the code of the repo
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          lfs: true
+      
+      # Caches the Unity Library
+      - name: Cache Library
+        uses: actions/cache@v2
+        with:
+          path: Library # if using project path, prefix with ${{ matrix.projectPath }}/
+          key: Library-Code-Coverage
+          restore-keys: Library-
+      
+      # Runs the tests for the specific play mode
+      - name: Code Coverage
+        uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          artifactsPath: code-coverage-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: Code Coverage Test Results
+          customParameters: -debugCodeOptimization -enableCodeCoverage -coverageOptions enableCyclomaticComplexity;generateHtmlReport;generateBadgeReport
+      
+      # Uploads the test results as an artifact
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results for code coverage
+          path: ${{ steps.tests.outputs.artifactsPath }}
