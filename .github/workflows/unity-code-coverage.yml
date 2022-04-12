@@ -46,7 +46,7 @@ jobs:
           artifactsPath: code-coverage-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: Code Coverage Test Results
-          customParameters: -debugCodeOptimization -enableCodeCoverage -coverageOptions enableCyclomaticComplexity;generateHtmlReport;generateBadgeReport;assemblyFilters:+* -coverageResultsPath ./CodeCoverage
+          customParameters: -debugCodeOptimization -enableCodeCoverage -coverageOptions enableCyclomaticComplexity;generateHtmlReport;generateBadgeReport;assemblyFilters:+* -coverageResultsPath code-coverage-artifacts
       
       # Uploads the test results as an artifact
       - name: Upload Test Results
