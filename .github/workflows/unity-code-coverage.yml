@@ -42,6 +42,7 @@ jobs:
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
+          testMode: editmode
           artifactsPath: code-coverage-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: Code Coverage Test Results
