@@ -35,17 +35,16 @@ jobs:
           key: Library-Code-Coverage
           restore-keys: Library-
       
-      # Runs the tests for the specific play mode
+      # Runs the tests for combined code coverage results
       - name: Code Coverage
         uses: game-ci/unity-test-runner@v2
         id: tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          artifactsPath: code-coverage-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Code Coverage Test Results
-          customParameters: -debugCodeOptimization -enableCodeCoverage -coverageOptions generateHtmlReport;generateBadgeReport;assemblyFilters:+<assets> -coverageResultsPath code-coverage-artifacts
+          testMode: all
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+<assets>'
       
       # Uploads the test results as an artifact
       - name: Upload Test Results
