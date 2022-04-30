@@ -51,3 +51,15 @@ jobs:
         with:
           name: Coverage results (all)
           path: ${{ steps.tests.outputs.coveragePath }}
+
+      - name: Retrieve Coverage Percentage
+        run: |
+          summary_data=$(cat ${{ steps.tests.outputs.coveragePath }}/Report/Summary.xml)
+          coverage=$(grep -oPm1 "(?<=<Linecoverage>)[^<]+" <<< $summary_data)
+          echo "Coverage is: " $coverage"/100"
+          if [ $coverage -ge $minimum ]
+          then 
+          echo "Minimum coverage is met."
+          else 
+          echo "Minimum coverage is NOT met."
+          core.setFailed('Minimum coverage is NOT met.')
