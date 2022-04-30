@@ -46,10 +46,9 @@ jobs:
           testMode: all
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+<assets>'
       
-      # Uploads the test results as an artifact
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v2
-        if: always()
+      # Gets the coverage results
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v3
         with:
-          name: Test results for code coverage
-          path: ${{ steps.tests.outputs.artifactsPath }}
+          name: Coverage results (all)
+          path: ${{ steps.allTests.outputs.coveragePath }}
