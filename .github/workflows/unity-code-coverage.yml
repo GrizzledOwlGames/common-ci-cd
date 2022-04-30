@@ -57,10 +57,9 @@ jobs:
           summary_data=$(cat ${{ steps.tests.outputs.coveragePath }}/Report/Summary.xml)
           coverage=$(grep -oPm1 "(?<=<Linecoverage>)[^<]+" <<< $summary_data)
           echo "Coverage is: " $coverage"/100"
-          if [ $coverage -ge $minimum ]
+          if [ $coverage -lt $minimum ]
           then 
-          echo "Minimum coverage is met."
-          else 
           echo "Minimum coverage is NOT met."
-          core.setFailed('Minimum coverage is NOT met.')
+          core.setFailed("Minimum coverage is NOT met.")
           fi
+          echo "Minimum coverage is met."
