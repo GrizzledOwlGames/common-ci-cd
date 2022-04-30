@@ -12,6 +12,7 @@ env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
   UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+  MINIMUM_COVERAGE: 80
 
 jobs:
 
@@ -52,13 +53,13 @@ jobs:
           name: Coverage results (all)
           path: ${{ steps.tests.outputs.coveragePath }}
 
-      - name: Retrieve Coverage Percentage
+      #Verifies that the minimum coverage is run
+      - name: Verify Minimum Coverage Percentage
         run: |
-          minimum=80
           summary_data=$(cat ${{ steps.tests.outputs.coveragePath }}/Report/Summary.xml)
           coverage=$(grep -oPm1 "(?<=<Linecoverage>)[^<]+" <<< $summary_data)
           echo "Coverage is: " $coverage"/100"
-          if [ $coverage -lt $minimum ]
+          if [ $coverage -lt $MINIMUM_COVERAGE ]
           then 
           echo "Minimum coverage is NOT met."
           exit 1
