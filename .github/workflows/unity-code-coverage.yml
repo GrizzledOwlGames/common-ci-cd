@@ -60,6 +60,6 @@ jobs:
           if [ $coverage -lt $minimum ]
           then 
           echo "Minimum coverage is NOT met."
-          core.setFailed("Minimum coverage is NOT met.")
+          exit 1
           fi
           echo "Minimum coverage is met."
