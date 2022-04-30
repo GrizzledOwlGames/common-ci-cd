@@ -54,6 +54,7 @@ jobs:
 
       - name: Retrieve Coverage Percentage
         run: |
+          minimum=80
           summary_data=$(cat ${{ steps.tests.outputs.coveragePath }}/Report/Summary.xml)
           coverage=$(grep -oPm1 "(?<=<Linecoverage>)[^<]+" <<< $summary_data)
           echo "Coverage is: " $coverage"/100"
