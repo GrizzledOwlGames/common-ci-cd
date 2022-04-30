@@ -113,7 +113,7 @@ jobs:
           name: Coverage results for all
           path: ${{ steps.tests.outputs.coveragePath }}
 
-      #Verifies that the minimum coverage is run
+      #Verifies that the minimum coverage is met
       - name: Verify Minimum Coverage Percentage
         run: |
           summary_data=$(cat ${{ steps.tests.outputs.coveragePath }}/Report/Summary.xml)
