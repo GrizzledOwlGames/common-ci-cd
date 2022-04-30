@@ -63,3 +63,4 @@ jobs:
           else 
           echo "Minimum coverage is NOT met."
           core.setFailed('Minimum coverage is NOT met.')
+          fi
